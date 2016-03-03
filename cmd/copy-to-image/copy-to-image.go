@@ -79,7 +79,15 @@ func main() {
 		fmt.Printf("Error starting container: %s\n", err)
 		os.Exit(1)
 	}
-
+	rc, err := client.WaitContainer(container.ID)
+	if err != nil {
+		fmt.Printf("Container wait failed: %s", err)
+		os.Exit(1)
+	}
+	if rc != 0 {
+		fmt.Printf("Container exited %d", rc)
+		os.Exit(1)
+	}
 	fmt.Printf("Created container %s\n", container.ID)
 	// If the slice is uninitialized, the client will send "null" for the
 	// entrypoint, resulting in the containerConfig entrypoint being inherited.
